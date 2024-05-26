@@ -1,0 +1,12 @@
+name: Vulcano
+version: '${project.version}'
+main: me.leopold95.vulcano.Vulcano
+api-version: '1.16'
+author: Leopold95
+
+commands:
+  vulcanevent:
+    description: "описание"
+    usage: "/vulcanevent <действие>"
+    permission: vulcanplugin.vulcancommand
+    permission-message: У вас недостачно прав для исплользования этой команды
