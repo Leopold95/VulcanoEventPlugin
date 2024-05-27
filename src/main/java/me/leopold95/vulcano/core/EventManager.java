@@ -17,7 +17,14 @@ public class EventManager {
         int z = Integer.parseInt(position[2]);
         String worldName = position[3];
 
+        Location eventLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+
         int animationDuration = Config.getInt("event-animation-duration");
+
+
+        Bukkit.getScheduler().runTaskTimer(Vulcano.getPlugin(), () -> {
+            eventLocation.getWorld().dropItemNaturally(eventLocation, Items.createPlayerPointsItem());
+        }, 0, 20);
 
         for(Player player : Bukkit.getOnlinePlayers()){
             player.sendMessage(Config.getMessage("event-global-begging"));
