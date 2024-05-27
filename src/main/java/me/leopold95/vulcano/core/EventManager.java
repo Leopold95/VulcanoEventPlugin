@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class EventManager {
     private static BossBar eventBossBar;
@@ -21,15 +23,20 @@ public class EventManager {
 
         int animationDuration = Config.getInt("event-animation-duration");
 
-
-        Bukkit.getScheduler().runTaskTimer(Vulcano.getPlugin(), () -> {
-            eventLocation.getWorld().dropItemNaturally(eventLocation, Items.createPlayerPointsItem());
-        }, 0, 20);
-
         for(Player player : Bukkit.getOnlinePlayers()){
             player.sendMessage(Config.getMessage("event-global-begging"));
         }
 
+        beginEventTask(eventLocation);
+
+        Bukkit.getScheduler().runTaskLater(Vulcano.getPlugin(), () -> {
+
+        }, 20*10);
+
+
+        Bukkit.getScheduler().runTaskTimer(Vulcano.getPlugin(), () -> {
+            eventLocation.getWorld().dropItemNaturally(eventLocation, Items.createPlayerPointsItem());
+        }, 0, 20);
 
 
 
@@ -38,7 +45,33 @@ public class EventManager {
         admin.sendMessage(message + ": " + position);
     }
 
-    private static void animationPlayer(Location animationLocation){
+    private static void beginEventTask(Location animationLocation){
+        Bukkit.getScheduler().runTaskTimer(Vulcano.getPlugin(), new BukkitRunnable() {
+            int taskTicks = 0;
+
+            @Override
+            public void run() {
+                taskTicks++;
+
+                playAnimation(animationLocation);
+                dropPoints(animationLocation);
+                dropMoney(animationLocation);
+
+                if(taskTicks >= 100)
+                    cancel();
+            }
+        },0, 20);
+    }
+
+    private static void playAnimation(Location location){
+
+    }
+
+    private static void dropMoney(Location location){
+
+    }
+
+    private static void dropPoints(Location location){
 
     }
 }

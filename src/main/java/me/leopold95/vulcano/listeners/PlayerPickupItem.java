@@ -56,7 +56,6 @@ public class PlayerPickupItem implements Listener {
             } else {
                 player.sendMessage(String.format("An error occured: %s", r.errorMessage));
             }
-            return;
         }
     }
 }

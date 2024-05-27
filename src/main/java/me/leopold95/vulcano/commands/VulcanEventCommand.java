@@ -68,15 +68,14 @@ public class VulcanEventCommand implements CommandExecutor {
         }
 
         if(args[0].equals("addeventdropitem")){
-
             ItemStack item = player.getInventory().getItemInMainHand();
 
             try {
                 VulcanItemConfig.addItem(item);
-                player.sendMessage("item saved");
+                player.sendMessage(Config.getMessage("add-event-item-ok"));
             }
             catch (Exception e){
-                player.sendMessage("item not saved");
+                player.sendMessage(Config.getMessage("add-event-item-bad"));
             }
 
             return true;
