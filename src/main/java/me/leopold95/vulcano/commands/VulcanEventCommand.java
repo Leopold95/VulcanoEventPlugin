@@ -3,10 +3,12 @@ package me.leopold95.vulcano.commands;
 import me.leopold95.vulcano.Vulcano;
 import me.leopold95.vulcano.core.Config;
 import me.leopold95.vulcano.core.EventManager;
+import me.leopold95.vulcano.core.VulcanItemConfig;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class VulcanEventCommand implements CommandExecutor {
     @Override
@@ -61,6 +63,21 @@ public class VulcanEventCommand implements CommandExecutor {
 
             //begin event
             EventManager.beginEvent(location, player);
+
+            return true;
+        }
+
+        if(args[0].equals("addeventdropitem")){
+
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            try {
+                VulcanItemConfig.addItem(item);
+                player.sendMessage("item saved");
+            }
+            catch (Exception e){
+                player.sendMessage("item not saved");
+            }
 
             return true;
         }

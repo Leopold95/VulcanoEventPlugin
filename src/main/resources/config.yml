@@ -1,2 +1,13 @@
 event-animation-duration: 10 #seconds
+
+#количево очков, которое будет начислятся при полнятии слезы гаста
 payer-points-item-cost: 1
+
+#количесво денег в золотых самородках, выпадающих при ивенте
+gold-drop-cost: 1.01
+
+#пустота чтобы не проигрывать
+#при неверном вводе звука - проигрыватьсч он не будет
+#указывать верхним регистром с нижним подчерркиванием
+payer-points-pickedup-sound: ENTITY_ENDER_PEARL_THROW
+payer-points-pickedup-sound-volume: 100

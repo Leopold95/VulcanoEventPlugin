@@ -4,3 +4,7 @@ event-coords-bad: Координаты для ивента не указаны!
 event-begging: Ивент будет начат на
 event-global-begging: Внимание! Ивент "Извержение вулкана" будет начат на
 player-points-api-error: Ошибка при отбращении к АПИ ПЛАГИНА PlayerPoints!
+player-points-pickedup: Вы подобрали %amount% очков. У вас всего %global%.
+
+add-event-item-ok: Предмет успешно добавлен в список
+add-event-item-bad: Ошибка при добавлении предмета в список

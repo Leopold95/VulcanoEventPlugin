@@ -12,7 +12,7 @@ public class VulcanEventTabComplete implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         if(strings.length == 1)
-            return Arrays.asList("setposition", "start");
+            return Arrays.asList("setposition", "start", "addeventdropitem");
         return null;
     }
 }

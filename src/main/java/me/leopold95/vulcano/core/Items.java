@@ -19,4 +19,16 @@ public class Items {
         item.setItemMeta(meta);
         return item;
     }
+
+    public static ItemStack createMoneyItem(){
+        ItemStack item = new ItemStack(Material.GOLD_NUGGET, 1);
+
+        ItemMeta meta = item.getItemMeta();
+
+        NamespacedKey key = Keys.PLAYER_MONEY_ITEM;
+        meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, key.getKey());
+
+        item.setItemMeta(meta);
+        return item;
+    }
 }

@@ -2,6 +2,7 @@ package me.leopold95.vulcano.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config {
@@ -17,6 +19,7 @@ public class Config {
     private static FileConfiguration messagesConfig;
     private static File configFile;
     private static FileConfiguration config;
+
 
 
     public static boolean existsConfig(String path){
@@ -99,9 +102,5 @@ public class Config {
         }
     }
 
-    private static void deleteFilesIfExist(String name, JavaPlugin plugin) {
-        File file = new File(plugin.getDataFolder(), name);
-        if (file.exists())
-            file.delete();
-    }
+
 }

@@ -5,6 +5,7 @@ api-version: '1.16'
 author: Leopold95
 depend:
   - PlayerPoints
+  - Vault
 
 commands:
   vulcanevent:
