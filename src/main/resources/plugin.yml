@@ -3,6 +3,8 @@ version: '${project.version}'
 main: me.leopold95.vulcano.Vulcano
 api-version: '1.16'
 author: Leopold95
+depend:
+  - PlayerPoints
 
 commands:
   vulcanevent:

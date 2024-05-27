@@ -1,18 +1,14 @@
 package me.leopold95.vulcano.commands;
 
 import me.leopold95.vulcano.Vulcano;
+import me.leopold95.vulcano.core.Config;
+import me.leopold95.vulcano.core.EventManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class VulcanEventCommand implements CommandExecutor {
-
-    private Vulcano plugin;
-    public VulcanEventCommand(Vulcano plugin){
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if(!(sender instanceof Player)) {
@@ -20,53 +16,55 @@ public class VulcanEventCommand implements CommandExecutor {
             return false;
         }
 
-        if(args.length == 0){
-            sender.sendMessage("");
-            return false;
-        }
-
         Player player = (Player) sender;
 
+        //setposition argument
         if(args[0].equals("setposition")){
+            //hash values
             int x = player.getLocation().getBlockX();
             int y = player.getLocation().getBlockY();
             int z = player.getLocation().getBlockZ();
+            String worldName = player.getWorld().getName();
 
-            //plugin.getUtils().setNextEventLocation(x, y, z);
-            plugin.getCustomConfig().setConfig("next-event-location", x + " " + y + " " + z);
-            String message = plugin.getCustomConfig().getMessage("event-coords-is");
-            sender.sendMessage(message + ": " + x + " " + y + " " + z);
+            //save next event location
+            Config.setConfig("next-event-location", x + " " + y + " " + z + " " + worldName);
+
+            //get next event location
+            String[] location = Config.getString("next-event-location").split(" ");
+
+            //notify sender about next event location
+            String message = Config.getMessage("event-coords-is");
+            sender.sendMessage(message + ": " + location[0] + " " + location[1] + " " + location[2] + " " + location[3]);
 
             return true;
         }
 
+        //start argument
         if(args[0].equals("start")){
             String strEventLocation;
 
             try {
-                strEventLocation = plugin.getCustomConfig().getString("next-event-location");
+                strEventLocation = Config.getString("next-event-location");
             }
             catch (Exception e){
                 strEventLocation = null;
             }
 
             if(strEventLocation == null || strEventLocation.isEmpty()){
-                String message = plugin.getCustomConfig().getMessage("event-coords-bad");
+                String message = Config.getMessage("event-coords-bad");
                 sender.sendMessage(message);
                 return true;
             }
 
-            String message = plugin.getCustomConfig().getMessage("event-begging");
-            sender.sendMessage(message + ": " + strEventLocation);
+            //get next event location
+            String[] location = Config.getString("next-event-location").split(" ");
+
+            //begin event
+            EventManager.beginEvent(location, player);
 
             return true;
         }
 
-
-
-        sender.sendMessage("u send command");
-
-
-        return true;
+        return false;
     }
 }

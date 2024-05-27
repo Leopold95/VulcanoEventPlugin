@@ -1,4 +1,4 @@
-package me.leopold95.vulcano.utils;
+package me.leopold95.vulcano.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,28 +13,21 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config {
-    private File messagesConfigFile;
-    private FileConfiguration messagesConfig;
-    private File configFile;
-    private FileConfiguration config;
+    private static File messagesConfigFile;
+    private static FileConfiguration messagesConfig;
+    private static File configFile;
+    private static FileConfiguration config;
 
 
-    private final JavaPlugin plugin;
-
-    public Config(JavaPlugin plugin){
-        this.plugin = plugin;
-        register();
-    }
-
-    public boolean existsConfig(String path){
+    public static boolean existsConfig(String path){
         return config.contains(path);
     }
 
-    public boolean existsMessage(String path){
+    public static boolean existsMessage(String path){
         return config.contains(path);
     }
 
-    public void setConfig(String path, Object object) {
+    public static void setConfig(String path, Object object) {
         try {
             config.set(path, object);
             config.save(configFile);
@@ -44,41 +37,41 @@ public class Config {
         }
     }
 
-    public void setMessage(String path, Object object) throws IOException {
+    public static void setMessage(String path, Object object) throws IOException {
         messagesConfig.set(path, object);
         messagesConfig.save(messagesConfigFile);
     }
 
-    public List<?> getList(String path) {
+    public static List<?> getList(String path) {
         return config.getList(path);
     }
 
-    public String getString(String path) {
+    public static String getString(String path) {
         return ChatColor.translateAlternateColorCodes('&', config.getString(path));
     }
 
-    public int getInt(String path) {
+    public static int getInt(String path) {
         return config.getInt(path);
     }
 
-    public boolean getBoolean(String path) {
+    public static boolean getBoolean(String path) {
         return config.getBoolean(path);
     }
 
-    public double getDouble(String path) {
+    public static double getDouble(String path) {
         return config.getDouble(path);
     }
 
-    public String getMessage(String path) {
+    public static String getMessage(String path) {
         return ChatColor.translateAlternateColorCodes('&', messagesConfig.getString(path));
     }
 
-    private void register() {
-        createMessagesConfig("messages.yml");
-        createConfig("config.yml");
+    public static void register(JavaPlugin plugin) {
+        createMessagesConfig("messages.yml", plugin);
+        createConfig("config.yml", plugin);
     }
 
-    private void createMessagesConfig(String file) {
+    private static void createMessagesConfig(String file, JavaPlugin plugin) {
         messagesConfigFile = new File(plugin.getDataFolder(), file);
         if (!messagesConfigFile.exists()) {
             messagesConfigFile.getParentFile().mkdirs();
@@ -92,7 +85,7 @@ public class Config {
         }
     }
 
-    private void createConfig(String file) {
+    private static void createConfig(String file, JavaPlugin plugin) {
         configFile = new File(plugin.getDataFolder(), file);
         if (!configFile.exists()) {
             configFile.getParentFile().mkdirs();
@@ -106,7 +99,7 @@ public class Config {
         }
     }
 
-    private void deleteFilesIfExist(String name) {
+    private static void deleteFilesIfExist(String name, JavaPlugin plugin) {
         File file = new File(plugin.getDataFolder(), name);
         if (file.exists())
             file.delete();

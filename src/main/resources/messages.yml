@@ -1,4 +1,6 @@
 only-for-players-command: Эта команда только для игроков
-event-coords-is: Координаты ивента сохраненены. Они раввны
+event-coords-is: Координаты ивента и мир следующего сохраненены
 event-coords-bad: Координаты для ивента не указаны!
 event-begging: Ивент будет начат на
+event-global-begging: Внимание! Ивент "Извержение вулкана" будет начат на
+player-points-api-error: Ошибка при отбращении к АПИ ПЛАГИНА PlayerPoints!

@@ -58,6 +58,12 @@
           <id>sonatype</id>
           <url>https://oss.sonatype.org/content/groups/public/</url>
       </repository>
+
+      <!--PLAYER POINTS DEPENDENCY-->
+      <repository>
+          <id>rosewood-repo</id>
+          <url>https://repo.rosewooddev.io/repository/public/</url>
+      </repository>
   </repositories>
 
   <dependencies>
@@ -65,6 +71,14 @@
           <groupId>org.spigotmc</groupId>
           <artifactId>spigot-api</artifactId>
           <version>1.16.5-R0.1-SNAPSHOT</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <!--PLAYER POINTS DEPENDENCY-->
+      <dependency>
+          <groupId>org.black_ixx</groupId>
+          <artifactId>playerpoints</artifactId>
+          <version>3.2.7</version>
           <scope>provided</scope>
       </dependency>
   </dependencies>
