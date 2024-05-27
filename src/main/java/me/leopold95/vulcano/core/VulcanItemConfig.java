@@ -1,5 +1,6 @@
 package me.leopold95.vulcano.core;
 
+import me.leopold95.vulcano.utils.NewPair;
 import me.leopold95.vulcano.utils.Pair;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
