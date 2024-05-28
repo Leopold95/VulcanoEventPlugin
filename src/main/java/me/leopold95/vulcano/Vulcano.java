@@ -5,12 +5,14 @@ import me.leopold95.vulcano.commands.VulcanEventTabComplete;
 import me.leopold95.vulcano.core.Config;
 import me.leopold95.vulcano.core.Keys;
 import me.leopold95.vulcano.core.VulcanItemConfig;
+import me.leopold95.vulcano.listeners.PlayerMoveListener;
 import me.leopold95.vulcano.listeners.PlayerPickupItem;
 import me.leopold95.vulcano.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,6 +34,7 @@ public final class Vulcano extends JavaPlugin {
         getCommand("vulcanevent").setTabCompleter(new VulcanEventTabComplete());
 
         getServer().getPluginManager().registerEvents(new PlayerPickupItem(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
 
         Config.register(this);
         VulcanItemConfig.register(this);

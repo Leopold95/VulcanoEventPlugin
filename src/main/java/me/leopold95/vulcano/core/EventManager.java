@@ -4,7 +4,10 @@ import me.leopold95.vulcano.Vulcano;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -12,22 +15,30 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.Random;
 
 public class EventManager {
-    private static BossBar eventBossBar;
+    public static BossBar eventBossBar = null;
+    public static Location eventLocation = null;
+    public static Double eventVisibleRadius = null;
+
     private static int duration;
     private static int timeRemaining;
 
     public static void beginEvent(String[] position, Player admin){
         int x = Integer.parseInt(position[0]);
-        int y = Integer.parseInt(position[1]);
         int z = Integer.parseInt(position[2]);
+        int y = Integer.parseInt(position[1]);
         String worldName = position[3];
-        Location eventLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+        eventLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+
 
         for(Player player : Bukkit.getOnlinePlayers()){
             player.sendMessage(Config.getMessage("event-global-begging"));
         }
 
         beginEventTask(eventLocation);
+
+        String bbTitle = Config.getString("boss-bar-title");
+        eventVisibleRadius = Config.getDouble("boss-bar-radius");
+        eventBossBar = Bukkit.createBossBar(bbTitle, BarColor.valueOf(Config.getString("boss-bar-color")), BarStyle.SOLID);
     }
 
     private static void beginEventTask(Location animationLocation){
@@ -37,18 +48,29 @@ public class EventManager {
 
         new RepeatingTask(Vulcano.getPlugin(), 0, 20) {
             int taskTicks = 0;
+
             @Override
             public void run() {
                 taskTicks++;
 
+                updatePlayersBossBar(animationLocation, eventVisibleRadius);
                 playAnimation(animationLocation);
                 dropPoints(animationLocation, radius);
                 dropMoney(animationLocation, radius);
 
-                if(taskTicks == duration)
+                if(taskTicks == duration){
+                    eventBossBar.removeAll();
+                    eventBossBar = null;
+                    eventLocation = null;
+                    eventVisibleRadius = null;
                     canncel();
+                }
             }
         };
+    }
+
+    private static void updatePlayersBossBar(Location center, double radius){
+
     }
 
     private static void playAnimation(Location location){

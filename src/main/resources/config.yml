@@ -1,5 +1,10 @@
 event-animation-duration: 10 #seconds
 
+boss-bar-radius: 50.0
+boss-bar-title: "Событие"
+boss-bar-color: "RED" #https://helpch.at/docs/1.16.5/org/bukkit/boss/BarColor.html
+
+
 #количево очков, которое будет начислятся при полнятии слезы гаста
 payer-points-item-cost: 1
 

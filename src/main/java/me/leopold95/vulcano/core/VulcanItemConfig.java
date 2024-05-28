@@ -5,6 +5,7 @@ import me.leopold95.vulcano.utils.Pair;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,8 +22,14 @@ public class VulcanItemConfig {
     private static FileConfiguration config;
 
 
-    public static void addItem(ItemStack item) throws IOException{
+    public static void addItem(ItemStack item, Player admin) throws IOException{
         List<ItemStack> items = loadItems(VULCAN_ITEMS_LIST_NAME);
+
+        if(items.contains(item)){
+            admin.sendMessage(Config.getMessage("add-event-item-exists"));
+            return;
+        }
+
         items.add(item);
         saveItems(items);
     }
