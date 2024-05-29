@@ -22,40 +22,40 @@ public class PlayerPickupItem implements Listener {
         if(!(event.getEntity() instanceof Player))
             return;
 
-        if(event.getItem().getItemStack().getItemMeta().getPersistentDataContainer().has(Keys.PLAYER_POINTS_ITEM, PersistentDataType.STRING));{
-            event.setCancelled(true);
-            event.getItem().remove();
-
-            Player player = (Player) event.getEntity();
-            int pointsAmount = Config.getInt("payer-points-item-cost");
-            Vulcano.getPlugin().getPpAPI().give(player.getUniqueId(), pointsAmount);
-
-            String pickedMessage = Config.getMessage("player-points-pickedup")
-                    .replace("%amount%", String.valueOf(pointsAmount))
-                    .replace("%global%", String.valueOf(plugin.getPpAPI().look(player.getUniqueId())));
-
-            player.sendMessage(pickedMessage);
-
-            try {
-                String sound = Config.getString("payer-points-pickedup-sound");
-                int volume = Config.getInt("payer-points-pickedup-sound-volume");
-                player.playSound(player.getLocation(), Sound.valueOf(sound), volume, 1);
-            }
-            catch (Exception ignored){ }
-        }
-
-        if(event.getItem().getPersistentDataContainer().has(Keys.PLAYER_MONEY_ITEM, PersistentDataType.STRING)){
-            event.setCancelled(true);
-            event.getItem().remove();
-
-            Player player = (Player) event.getEntity();
-            double cost = Config.getDouble("gold-drop-cost");
-            EconomyResponse r = plugin.getEconomy().depositPlayer(player, cost);
-            if(r.transactionSuccess()) {
-                player.sendMessage(String.format("You were given %s and now have %s", plugin.getEconomy().format(r.amount), plugin.getEconomy().format(r.balance)));
-            } else {
-                player.sendMessage(String.format("An error occured: %s", r.errorMessage));
-            }
-        }
+//        if(event.getItem().getItemStack().getItemMeta().getPersistentDataContainer().has(Keys.PLAYER_POINTS_ITEM, PersistentDataType.STRING));{
+//            event.setCancelled(true);
+//            event.getItem().remove();
+//
+//            Player player = (Player) event.getEntity();
+//            int pointsAmount = Config.getInt("payer-points-item-cost");
+//            Vulcano.getPlugin().getPpAPI().give(player.getUniqueId(), pointsAmount);
+//
+//            String pickedMessage = Config.getMessage("player-points-pickedup")
+//                    .replace("%amount%", String.valueOf(pointsAmount))
+//                    .replace("%global%", String.valueOf(plugin.getPpAPI().look(player.getUniqueId())));
+//
+//            player.sendMessage(pickedMessage);
+//
+//            try {
+//                String sound = Config.getString("payer-points-pickedup-sound");
+//                int volume = Config.getInt("payer-points-pickedup-sound-volume");
+//                player.playSound(player.getLocation(), Sound.valueOf(sound), volume, 1);
+//            }
+//            catch (Exception ignored){ }
+//        }
+//
+//        if(event.getItem().getPersistentDataContainer().has(Keys.PLAYER_MONEY_ITEM, PersistentDataType.STRING)){
+//            event.setCancelled(true);
+//            event.getItem().remove();
+//
+//            Player player = (Player) event.getEntity();
+//            double cost = Config.getDouble("gold-drop-cost");
+//            EconomyResponse r = plugin.getEconomy().depositPlayer(player, cost);
+//            if(r.transactionSuccess()) {
+//                player.sendMessage(String.format("You were given %s and now have %s", plugin.getEconomy().format(r.amount), plugin.getEconomy().format(r.balance)));
+//            } else {
+//                player.sendMessage(String.format("An error occured: %s", r.errorMessage));
+//            }
+//        }
     }
 }

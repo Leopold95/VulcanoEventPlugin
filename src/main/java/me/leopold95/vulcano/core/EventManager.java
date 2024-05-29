@@ -56,30 +56,30 @@ public class EventManager {
     }
 
     private static void beginEventTask(Location animationLocation){
-        int duration = Config.getInt("event-animation-duration");
-        int itemsDropRadius = Config.getInt("dropping-radius");
-
-
         new RepeatingTask(Vulcano.getPlugin(), 0, 20) {
             int taskTicks = 0;
 
             @Override
             public void run() {
+                int duration = Config.getInt("event-animation-duration");
+                int randomDropCount = Config.getInt("random-items-drop-count");
+                int itemsDropRadius = Config.getInt("dropping-radius");
+
                 taskTicks++;
 
                 updatePlayersBossBar(animationLocation, eventVisibleRadius);
                 playSound(animationLocation);
                 playAnimation(animationLocation);
 
-                dropPoints(animationLocation, itemsDropRadius);
-                dropMoney(animationLocation, itemsDropRadius);
+//                dropPoints(animationLocation, itemsDropRadius);
+//                dropMoney(animationLocation, itemsDropRadius);
 
                 if(taskTicks == duration){
                     eventBossBar.removeAll();
                     eventBossBar = null;
                     eventLocation = null;
                     eventVisibleRadius = null;
-                    dropFinalItem(animationLocation);
+                    dropFinalItem(animationLocation, randomDropCount);
                     canncel();
                 }
             }
@@ -123,32 +123,34 @@ public class EventManager {
         }
     }
 
-    private static void dropMoney(Location location, int radius){
-        int randomPos1 = new Random().nextInt((radius) + 1);
-        int randomPos2 = new Random().nextInt((radius) + 1);
+//    private static void dropMoney(Location location, int radius){
+//        int randomPos1 = new Random().nextInt((radius) + 1);
+//        int randomPos2 = new Random().nextInt((radius) + 1);
+//
+//        Location loc = location.clone();
+//        loc.setX(loc.getX() + randomPos1);
+//        loc.setZ(loc.getZ() + randomPos2);
+//        loc.setY(loc.getY() + 3);
+//
+//        location.getWorld().dropItemNaturally(loc, Items.createMoneyItem());
+//    }
+//
+//    private static void dropPoints(Location location, int radius){
+//        int randomPos1 = new Random().nextInt((radius) + 1);
+//        int randomPos2 = new Random().nextInt((radius) + 1);
+//
+//        Location loc = location.clone();
+//        loc.setX(loc.getX() + randomPos1);
+//        loc.setZ(loc.getZ() + randomPos2);
+//        loc.setY(loc.getY() + 3);
+//
+//        location.getWorld().dropItemNaturally(location, Items.createPlayerPointsItem());
+//    }
 
-        Location loc = location.clone();
-        loc.setX(loc.getX() + randomPos1);
-        loc.setZ(loc.getZ() + randomPos2);
-        loc.setY(loc.getY() + 3);
-
-        location.getWorld().dropItemNaturally(loc, Items.createMoneyItem());
-    }
-
-    private static void dropPoints(Location location, int radius){
-        int randomPos1 = new Random().nextInt((radius) + 1);
-        int randomPos2 = new Random().nextInt((radius) + 1);
-
-        Location loc = location.clone();
-        loc.setX(loc.getX() + randomPos1);
-        loc.setZ(loc.getZ() + randomPos2);
-        loc.setY(loc.getY() + 3);
-
-        location.getWorld().dropItemNaturally(location, Items.createPlayerPointsItem());
-    }
-
-    private static void dropFinalItem(Location location){
-        ItemStack item = VulcanItemConfig.randomItem();
-        location.getWorld().dropItemNaturally(location, item);
+    private static void dropFinalItem(Location location, int randomCount){
+        for(int i = 0; i < randomCount; i ++){
+            ItemStack item = VulcanItemConfig.randomItem();
+            location.getWorld().dropItemNaturally(location, item);
+        }
     }
 }
