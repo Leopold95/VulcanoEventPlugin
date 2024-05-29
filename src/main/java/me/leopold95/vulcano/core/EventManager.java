@@ -8,11 +8,14 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class EventManager {
@@ -71,6 +74,7 @@ public class EventManager {
                     eventBossBar = null;
                     eventLocation = null;
                     eventVisibleRadius = null;
+                    dropFinalItem(animationLocation);
                     canncel();
                 }
             }
@@ -124,5 +128,10 @@ public class EventManager {
         loc.setY(loc.getY() + 3);
 
         location.getWorld().dropItemNaturally(location, Items.createPlayerPointsItem());
+    }
+
+    private static void dropFinalItem(Location location){
+        ItemStack item = VulcanItemConfig.randomItem();
+        location.getWorld().dropItemNaturally(location, item);
     }
 }

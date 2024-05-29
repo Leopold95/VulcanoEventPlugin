@@ -3,6 +3,7 @@ package me.leopold95.vulcano.core;
 import me.leopold95.vulcano.utils.NewPair;
 import me.leopold95.vulcano.utils.Pair;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class VulcanItemConfig {
     private static final String VULCAN_ITEMS_LIST_NAME = "vulcan-items-list";
@@ -24,6 +25,38 @@ public class VulcanItemConfig {
     private static File filee;
     private static FileConfiguration config;
 
+    public  static ItemStack randomItem(){
+        ItemStack item = new ItemStack(Material.AIR, 1);
+
+        List<ItemStack> elements = loadItems(VULCAN_ITEMS_LIST_NAME);
+        List<Integer> chances = loadPercents(VULCAN_ITEMS_LIST_CHANCE);
+
+        if (elements.size() != chances.size()) {
+            Bukkit.getConsoleSender().sendMessage(Config.getMessage("event-bad-item-chacnces"));
+            return item;
+        }
+
+        // Create a cumulative distribution list
+        List<Integer> cumulativeChances = new ArrayList<>();
+        int sum = 0;
+        for (int chance : chances) {
+            sum += chance;
+            cumulativeChances.add(sum);
+        }
+
+        // Generate a random number between 1 and 100
+        Random random = new Random();
+        int randomValue = random.nextInt(100) + 1;
+
+        // Find the corresponding element based on the random value
+        for (int i = 0; i < cumulativeChances.size(); i++) {
+            if (randomValue <= cumulativeChances.get(i)) {
+                return elements.get(i);
+            }
+        }
+
+        return item;
+    }
 
     public static void addItem(ItemStack item, Player admin) throws IOException, InvalidConfigurationException {
         List<ItemStack> items = loadItems(VULCAN_ITEMS_LIST_NAME);
