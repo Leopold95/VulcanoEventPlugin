@@ -12,38 +12,46 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class EventManager {
-    public static BossBar eventBossBar = null;
-    public static Location eventLocation = null;
-    public static Double eventVisibleRadius = null;
+    private static BossBar eventBossBar = null;
+    private static Location eventLocation = null;
+    private static Double eventVisibleRadius = null;
 
     private static int duration;
     private static int timeRemaining;
 
-    public static void beginEvent(String[] position, Player admin){
+    public static void  beginEvent(String[] position, Player admin){
+        if(eventBossBar != null){
+            admin.sendMessage(Config.getMessage("event-exists"));
+            return;
+        }
+
         int x = Integer.parseInt(position[0]);
         int z = Integer.parseInt(position[2]);
         int y = Integer.parseInt(position[1]);
         String worldName = position[3];
         eventLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
 
-
         for(Player player : Bukkit.getOnlinePlayers()){
-            player.sendMessage(Config.getMessage("event-global-begging"));
-        }
+            String messageBegin = Config.getMessage("event-global-begging");
+            messageBegin += " x z" + eventLocation.getX() + " " + eventLocation.getZ();
 
-        beginEventTask(eventLocation);
+            player.sendMessage(messageBegin);
+        }
 
         String bbTitle = Config.getString("boss-bar-title");
         eventVisibleRadius = Config.getDouble("boss-bar-radius");
         eventBossBar = Bukkit.createBossBar(bbTitle, BarColor.valueOf(Config.getString("boss-bar-color")), BarStyle.SOLID);
+
+        beginEventTask(eventLocation);
     }
 
     private static void beginEventTask(Location animationLocation){
         int duration = Config.getInt("event-animation-duration");
-        int radius = Config.getInt("dropping-radius");
+        int itemsDropRadius = Config.getInt("dropping-radius");
 
 
         new RepeatingTask(Vulcano.getPlugin(), 0, 20) {
@@ -55,8 +63,8 @@ public class EventManager {
 
                 updatePlayersBossBar(animationLocation, eventVisibleRadius);
                 playAnimation(animationLocation);
-                dropPoints(animationLocation, radius);
-                dropMoney(animationLocation, radius);
+                dropPoints(animationLocation, itemsDropRadius);
+                dropMoney(animationLocation, itemsDropRadius);
 
                 if(taskTicks == duration){
                     eventBossBar.removeAll();
@@ -70,7 +78,14 @@ public class EventManager {
     }
 
     private static void updatePlayersBossBar(Location center, double radius){
-
+        for (Player player: Bukkit.getOnlinePlayers()){
+            if(player.getLocation().distance(center) <= radius){
+                if(!eventBossBar.getPlayers().contains(player))
+                    eventBossBar.addPlayer(player);
+                else
+                    eventBossBar.removePlayer(player);
+            }
+        }
     }
 
     private static void playAnimation(Location location){

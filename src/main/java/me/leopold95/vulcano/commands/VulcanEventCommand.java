@@ -4,6 +4,7 @@ import me.leopold95.vulcano.Vulcano;
 import me.leopold95.vulcano.core.Config;
 import me.leopold95.vulcano.core.EventManager;
 import me.leopold95.vulcano.core.VulcanItemConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -63,7 +64,6 @@ public class VulcanEventCommand implements CommandExecutor {
 
             //begin event
             EventManager.beginEvent(location, player);
-
             return true;
         }
 
@@ -72,10 +72,26 @@ public class VulcanEventCommand implements CommandExecutor {
 
             try {
                 VulcanItemConfig.addItem(item, player);
-                player.sendMessage(Config.getMessage("add-event-item-ok"));
             }
             catch (Exception e){
+                e.printStackTrace();
                 player.sendMessage(Config.getMessage("add-event-item-bad"));
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
+            }
+
+            return true;
+        }
+
+        if(args[0].equals("removeeventdropitem")){
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            try {
+                VulcanItemConfig.removeItem(item, player);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                player.sendMessage("item remove error");
+                Bukkit.getConsoleSender().sendMessage(e.getMessage());
             }
 
             return true;

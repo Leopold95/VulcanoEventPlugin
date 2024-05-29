@@ -32,6 +32,7 @@ public class Config {
 
     public static void setConfig(String path, Object object) {
         try {
+
             config.set(path, object);
             config.save(configFile);
         }
@@ -47,6 +48,10 @@ public class Config {
 
     public static List<?> getList(String path) {
         return config.getList(path);
+    }
+
+    public static List<String> getStringList(String path) {
+        return config.getStringList(path);
     }
 
     public static String getString(String path) {

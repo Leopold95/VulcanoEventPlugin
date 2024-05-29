@@ -2,6 +2,7 @@ package me.leopold95.vulcano.core;
 
 import me.leopold95.vulcano.utils.NewPair;
 import me.leopold95.vulcano.utils.Pair;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 public class VulcanItemConfig {
     private static final String VULCAN_ITEMS_LIST_NAME = "vulcan-items-list";
+    private static final String VULCAN_ITEMS_LIST_CHANCE = "vulcan-item-chance";
 
     private static File filee;
     private static FileConfiguration config;
@@ -30,7 +32,15 @@ public class VulcanItemConfig {
             return;
         }
 
+        List<String> itemPercents = Config.getStringList(VULCAN_ITEMS_LIST_CHANCE);
+
         items.add(item);
+        itemPercents.add((items.size() - 1) + ":0");
+
+        Config.setConfig(VULCAN_ITEMS_LIST_CHANCE, itemPercents);
+
+        admin.sendMessage("предмет доавблен в список. отредактиройте шанс выпадения в конфиге в Х");
+
         saveItems(items);
     }
 
@@ -42,7 +52,40 @@ public class VulcanItemConfig {
         config.save(filee);
     }
 
-    public static List<ItemStack> loadItems(String path) {
+    public static void removeItem(ItemStack item, Player admin) throws IOException {
+        List<ItemStack> items = loadItems(VULCAN_ITEMS_LIST_NAME);
+        List<String> itemPercents = Config.getStringList(VULCAN_ITEMS_LIST_CHANCE);
+
+        if(items.contains(item)){
+            List<ItemStack> itemsCopy = new ArrayList<>();
+            List<String> percentsCopy = new ArrayList<>();
+
+            int newPercentsIndex = 0;
+
+            for(int i = 0; i < items.size(); i++){
+                if(items.get(i).equals(item)){
+//                    items.remove(i);
+//                    itemPercents.remove(i);
+                }
+                else {
+                    itemsCopy.add(items.get(i));
+                    String[] oldInfo = itemPercents.get(i).split(":");
+                    percentsCopy.add(newPercentsIndex + ":" + oldInfo[1]);
+                    newPercentsIndex++;
+                }
+            }
+
+            Bukkit.getConsoleSender().sendMessage(String.valueOf(itemsCopy.size()));
+            Bukkit.getConsoleSender().sendMessage(String.valueOf(percentsCopy.size()));
+
+            saveItems(itemsCopy);
+            Config.setConfig(VULCAN_ITEMS_LIST_CHANCE, percentsCopy);
+
+            admin.sendMessage("item removed");
+        }
+    }
+
+    private static List<ItemStack> loadItems(String path) {
         ConfigurationSection section = config.getConfigurationSection(path);
         List<ItemStack> items = new ArrayList<>();
 

@@ -10,18 +10,18 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class PlayerMoveListener implements Listener {
     @EventHandler
     private void onPlayerMove(PlayerMoveEvent event){
-        Player player = event.getPlayer();
-        Location playerLocation = player.getLocation();
-
-        if(EventManager.eventLocation == null || EventManager.eventVisibleRadius == null ||
-                EventManager.eventBossBar == null)
-            return;
-
-        if (playerLocation.distance(EventManager.eventLocation) <= EventManager.eventVisibleRadius) { // Within 5 blocks
-            EventManager.eventBossBar.addPlayer(player);
-        } else {
-            EventManager.eventBossBar.removePlayer(player);
-        }
+//        Player player = event.getPlayer();
+//        Location playerLocation = player.getLocation();
+//
+//        if(EventManager.eventLocation == null || EventManager.eventVisibleRadius == null ||
+//                EventManager.eventBossBar == null)
+//            return;
+//
+//        if (playerLocation.distance(EventManager.eventLocation) <= EventManager.eventVisibleRadius) { // Within 5 blocks
+//            EventManager.eventBossBar.addPlayer(player);
+//        } else {
+//            EventManager.eventBossBar.removePlayer(player);
+//        }
 
     }
 }
