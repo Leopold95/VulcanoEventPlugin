@@ -2,7 +2,12 @@ event-animation-duration: 10 #seconds
 
 boss-bar-radius: 50.0
 boss-bar-title: "Событие"
-boss-bar-color: "RED" #https://helpch.at/docs/1.16.5/org/bukkit/boss/BarColor.html
+#https://helpch.at/docs/1.16.5/org/bukkit/boss/BarColor.html
+boss-bar-color: "RED"
+
+#https://helpch.at/docs/1.16.5/org/bukkit/Sound.html
+vulcan-tick-sound: "BLOCK_ANVIL_FALL"
+vulcan-tick-sound-volume: 80
 
 
 #количево очков, которое будет начислятся при полнятии слезы гаста

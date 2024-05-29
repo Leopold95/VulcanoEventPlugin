@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class VulcanItemConfig {
     private static final String VULCAN_ITEMS_LIST_NAME = "vulcan-items-list";
@@ -28,8 +29,8 @@ public class VulcanItemConfig {
     public  static ItemStack randomItem(){
         ItemStack item = new ItemStack(Material.AIR, 1);
 
-        List<ItemStack> elements = loadItems(VULCAN_ITEMS_LIST_NAME);
-        List<Integer> chances = loadPercents(VULCAN_ITEMS_LIST_CHANCE);
+        List<ItemStack> elements = loadItems();
+        List<Integer> chances = loadPercents();
 
         if (elements.size() != chances.size()) {
             Bukkit.getConsoleSender().sendMessage(Config.getMessage("event-bad-item-chacnces"));
@@ -58,65 +59,50 @@ public class VulcanItemConfig {
         return item;
     }
 
-    public static void addItem(ItemStack item, Player admin) throws IOException, InvalidConfigurationException {
-        List<ItemStack> items = loadItems(VULCAN_ITEMS_LIST_NAME);
+    public static void addItem(ItemStack item, Player admin) throws IOException {
+        List<ItemStack> items = loadItems();
 
         if(items.contains(item)){
             admin.sendMessage(Config.getMessage("add-event-item-exists"));
             return;
         }
 
-        //List<String> itemPercents = Config.getStringList(VULCAN_ITEMS_LIST_CHANCE);
-        List<Integer> itemPercents = loadPercents(VULCAN_ITEMS_LIST_CHANCE);
+        List<Integer> itemPercents = loadPercents();
 
         items.add(item);
         itemPercents.add(0);
-
-        //Config.setConfig(VULCAN_ITEMS_LIST_CHANCE, itemPercents);
 
         saveItems(items, itemPercents);
 
         admin.sendMessage(Config.getMessage("event-item-saved"));
     }
 
-    public static void removeItem(ItemStack item, Player admin) throws IOException, InvalidConfigurationException {
-        List<ItemStack> items = loadItems(VULCAN_ITEMS_LIST_NAME);
+    public static void removeItem(ItemStack item, Player admin) throws IOException {
+        List<ItemStack> items = loadItems();
 
         if(items.contains(item)){
-            List<Integer> itemPercents = loadPercents(VULCAN_ITEMS_LIST_CHANCE);
-            System.out.println(itemPercents);
+            List<Integer> itemPercents = loadPercents();
 
             List<ItemStack> itemsCopy = new ArrayList<>();
             List<Integer> percentsCopy = new ArrayList<>();
 
-            int newPercentsIndex = 0;
-
             for(int i = 0; i < items.size(); i++){
-                //Bukkit.getConsoleSender().sendMessage(itemPercents.get(i));
                 //add item to temp updated list if
                 if(!items.get(i).equals(item)){
-                    //add item to temp list
                     itemsCopy.add(items.get(i));
-                    //update indexes into percents map
-//                    String[] oldInfo = .split(":");
-//                    String oldPercents = oldInfo[1];
-                    //Bukkit.getConsoleSender().sendMessage(oldPercents);
-                    //add updated index to list
                     percentsCopy.add(itemPercents.get(i));
-                    newPercentsIndex++;
                 }
             }
 
             //save items config and save percents map section
             saveItems(itemsCopy, percentsCopy);
-            //Config.setConfig(VULCAN_ITEMS_LIST_CHANCE, percentsCopy);
 
             admin.sendMessage(Config.getMessage("event-item-removed"));
         }
     }
 
-    private static List<ItemStack> loadItems(String path) {
-        ConfigurationSection section = config.getConfigurationSection(path);
+    private static List<ItemStack> loadItems() {
+        ConfigurationSection section = config.getConfigurationSection(VULCAN_ITEMS_LIST_NAME);
         List<ItemStack> items = new ArrayList<>();
 
         if (section == null) {
@@ -133,8 +119,8 @@ public class VulcanItemConfig {
         return items;
     }
 
-    private static List<Integer> loadPercents(String path) {
-        ConfigurationSection section = config.getConfigurationSection(path);
+    private static List<Integer> loadPercents() {
+        ConfigurationSection section = config.getConfigurationSection(VULCAN_ITEMS_LIST_CHANCE);
         List<Integer> percents = new ArrayList<>();
 
         if (section == null) {
@@ -150,7 +136,7 @@ public class VulcanItemConfig {
         return percents;
     }
 
-    private static void saveItems(List<ItemStack> items, List<Integer> percents) throws IOException, InvalidConfigurationException {
+    private static void saveItems(List<ItemStack> items, List<Integer> percents) throws IOException {
         ConfigurationSection section = config.createSection(VULCAN_ITEMS_LIST_NAME);
         ConfigurationSection section2 = config.createSection(VULCAN_ITEMS_LIST_CHANCE);
 
@@ -162,6 +148,19 @@ public class VulcanItemConfig {
         System.out.println("percents saves as:" + percents);
 
         config.save(filee);
+    }
+
+    public static boolean checkAllPercents(){
+        int sum = 0;
+
+        for(Integer i: loadPercents()){
+            sum += i;
+        }
+
+        if(sum == 100)
+            return true;
+
+        return false;
     }
 
 //    public static void addVulcanItem(ItemStack item) throws IOException{

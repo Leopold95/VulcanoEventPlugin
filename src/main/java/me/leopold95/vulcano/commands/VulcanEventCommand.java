@@ -90,7 +90,7 @@ public class VulcanEventCommand implements CommandExecutor {
             }
             catch (Exception e){
                 e.printStackTrace();
-                player.sendMessage("item remove error");
+                player.sendMessage(Config.getMessage("event-item-remove-bad"));
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
             }
 

@@ -4,6 +4,7 @@ import me.leopold95.vulcano.Vulcano;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -23,12 +24,14 @@ public class EventManager {
     private static Location eventLocation = null;
     private static Double eventVisibleRadius = null;
 
-    private static int duration;
-    private static int timeRemaining;
-
     public static void  beginEvent(String[] position, Player admin){
         if(eventBossBar != null){
             admin.sendMessage(Config.getMessage("event-exists"));
+            return;
+        }
+
+        if(!VulcanItemConfig.checkAllPercents()){
+            admin.sendMessage(Config.getMessage("event-bad-item-percents"));
             return;
         }
 
@@ -65,7 +68,9 @@ public class EventManager {
                 taskTicks++;
 
                 updatePlayersBossBar(animationLocation, eventVisibleRadius);
+                playSound(animationLocation);
                 playAnimation(animationLocation);
+
                 dropPoints(animationLocation, itemsDropRadius);
                 dropMoney(animationLocation, itemsDropRadius);
 
@@ -90,6 +95,18 @@ public class EventManager {
                     eventBossBar.removePlayer(player);
             }
         }
+    }
+
+    private static void playSound(Location location){
+        try {
+            String soundStr = Config.getString("vulcan-tick-sound");
+            int soundVolume = Config.getInt("vulcan-tick-sound-volume");
+
+            for(Player player : eventBossBar.getPlayers()){
+                player.playSound(location, Sound.valueOf(soundStr), soundVolume, 1);
+            }
+        }
+        catch (Exception ignored) {}
     }
 
     private static void playAnimation(Location location){
