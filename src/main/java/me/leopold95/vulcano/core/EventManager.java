@@ -20,11 +20,17 @@ import java.util.List;
 import java.util.Random;
 
 public class EventManager {
-    private static BossBar eventBossBar = null;
-    private static Location eventLocation = null;
-    private static Double eventVisibleRadius = null;
+    private Vulcano plugin;
+    public EventManager(Vulcano plugin){
+        this.plugin = plugin;
+    }
 
-    public static void  beginEvent(String[] position, Player admin){
+
+    private BossBar eventBossBar = null;
+    private Location eventLocation = null;
+    private Double eventVisibleRadius = null;
+
+    public void  beginEvent(String[] position, Player admin){
         if(eventBossBar != null){
             admin.sendMessage(Config.getMessage("event-exists"));
             return;
@@ -55,7 +61,7 @@ public class EventManager {
         beginEventTask(eventLocation);
     }
 
-    private static void beginEventTask(Location animationLocation){
+    private void beginEventTask(Location animationLocation){
         new RepeatingTask(Vulcano.getPlugin(), 0, 20) {
             int taskTicks = 0;
 
@@ -79,25 +85,23 @@ public class EventManager {
                     eventBossBar = null;
                     eventLocation = null;
                     eventVisibleRadius = null;
-                    dropFinalItem(animationLocation, randomDropCount);
+                    dropFinalItem(animationLocation, itemsDropRadius, randomDropCount);
                     canncel();
                 }
             }
         };
     }
 
-    private static void updatePlayersBossBar(Location center, double radius){
+    private void updatePlayersBossBar(Location center, double radius){
         for (Player player: Bukkit.getOnlinePlayers()){
             if(player.getLocation().distance(center) <= radius){
                 if(!eventBossBar.getPlayers().contains(player))
                     eventBossBar.addPlayer(player);
-                else
-                    eventBossBar.removePlayer(player);
             }
         }
     }
 
-    private static void playSound(Location location){
+    private void playSound(Location location){
         try {
             String soundStr = Config.getString("vulcan-tick-sound");
             int soundVolume = Config.getInt("vulcan-tick-sound-volume");
@@ -109,7 +113,7 @@ public class EventManager {
         catch (Exception ignored) {}
     }
 
-    private static void playAnimation(Location location){
+    private void playAnimation(Location location){
         double radius = 0.7; // Radius of the circle
         double yIncrement = 0.4; // Increment for the y-coordinate
 
@@ -147,10 +151,28 @@ public class EventManager {
 //        location.getWorld().dropItemNaturally(location, Items.createPlayerPointsItem());
 //    }
 
-    private static void dropFinalItem(Location location, int randomCount){
+    private void dropFinalItem(Location location, int dropRadius,  int randomCount){
         for(int i = 0; i < randomCount; i ++){
             ItemStack item = VulcanItemConfig.randomItem();
-            location.getWorld().dropItemNaturally(location, item);
+            Location dropRandomLocation = getRandomLocation(location, dropRadius);
+            location.getWorld().dropItemNaturally(dropRandomLocation, item);
         }
+    }
+
+    private Location getRandomLocation(Location originalLocation, int radius) {
+        Random random = new Random();
+        // Generate random angle and distance
+        double angle = random.nextDouble() * 2 * Math.PI; // Random angle between 0 and 2*PI
+        double distance = random.nextDouble() * radius; // Random distance within the radius
+
+        // Calculate new x and z based on the angle and distance
+        double xOffset = distance * Math.cos(angle);
+        double zOffset = distance * Math.sin(angle);
+
+        // Create new location with the random offsets
+        Location randomLocation = originalLocation.clone();
+        randomLocation.add(xOffset, 0, zOffset);
+
+        return randomLocation;
     }
 }

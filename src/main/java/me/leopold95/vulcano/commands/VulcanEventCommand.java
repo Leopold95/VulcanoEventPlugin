@@ -12,6 +12,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class VulcanEventCommand implements CommandExecutor {
+    private Vulcano plugin;
+
+    public VulcanEventCommand(Vulcano plugin){
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if(!(sender instanceof Player)) {
@@ -63,7 +69,7 @@ public class VulcanEventCommand implements CommandExecutor {
             String[] location = Config.getString("next-event-location").split(" ");
 
             //begin event
-            EventManager.beginEvent(location, player);
+            plugin.getVulcanEvent().beginEvent(location, player);
             return true;
         }
 

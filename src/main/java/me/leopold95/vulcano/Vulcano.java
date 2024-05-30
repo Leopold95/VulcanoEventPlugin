@@ -3,6 +3,7 @@ package me.leopold95.vulcano;
 import me.leopold95.vulcano.commands.VulcanEventCommand;
 import me.leopold95.vulcano.commands.VulcanEventTabComplete;
 import me.leopold95.vulcano.core.Config;
+import me.leopold95.vulcano.core.EventManager;
 import me.leopold95.vulcano.core.VulcanItemConfig;
 import me.leopold95.vulcano.listeners.PlayerPickupItem;
 import me.leopold95.vulcano.utils.Utils;
@@ -14,24 +15,26 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Vulcano extends JavaPlugin {
-    private Utils utils;
-
     private PlayerPointsAPI ppAPI;
     private Economy economy;
+    private EventManager vulcanEvent;
 
     private static Vulcano plugin;
 
     @Override
     public void onEnable() {
         plugin = this;
-        getCommand("vulcanevent").setExecutor(new VulcanEventCommand());
+
+        getCommand("vulcanevent").setExecutor(new VulcanEventCommand(this));
         getCommand("vulcanevent").setTabCompleter(new VulcanEventTabComplete());
 
         getServer().getPluginManager().registerEvents(new PlayerPickupItem(this), this);
 
         Config.register(this);
         VulcanItemConfig.register(this);
-        utils = new Utils(this);
+
+        vulcanEvent = new EventManager(this);
+
         setupEconomy();
 
         //PlayerPointsAPI init
@@ -65,9 +68,7 @@ public final class Vulcano extends JavaPlugin {
         return economy;
     }
 
-    public Utils getUtils(){
-        return utils;
-    }
+    public EventManager getVulcanEvent() { return vulcanEvent;}
 
     public static Vulcano getPlugin(){
         return plugin;

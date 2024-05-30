@@ -1,15 +1,10 @@
 package me.leopold95.vulcano.listeners;
 
 import me.leopold95.vulcano.Vulcano;
-import me.leopold95.vulcano.core.Config;
-import me.leopold95.vulcano.core.Keys;
-import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.persistence.PersistentDataType;
 
 public class PlayerPickupItem implements Listener {
     private Vulcano plugin;
