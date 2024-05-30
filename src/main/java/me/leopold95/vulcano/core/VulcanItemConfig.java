@@ -67,6 +67,11 @@ public class VulcanItemConfig {
             return;
         }
 
+        if(item.getType().equals(Material.AIR) || item == null){
+            admin.sendMessage(Config.getMessage("add-event-item-air"));
+            return;
+        }
+
         List<Integer> itemPercents = loadPercents();
 
         items.add(item);
@@ -79,6 +84,11 @@ public class VulcanItemConfig {
 
     public static void removeItem(ItemStack item, Player admin) throws IOException {
         List<ItemStack> items = loadItems();
+
+        if(item.getType().equals(Material.AIR) || item == null){
+            admin.sendMessage(Config.getMessage("remove-event-item-air"));
+            return;
+        }
 
         if(items.contains(item)){
             List<Integer> itemPercents = loadPercents();
@@ -99,6 +109,13 @@ public class VulcanItemConfig {
 
             admin.sendMessage(Config.getMessage("event-item-removed"));
         }
+        else {
+            admin.sendMessage(Config.getMessage("remove-event-item-bad"));
+        }
+    }
+
+    public static int itemsCount(){
+        return loadItems().size();
     }
 
     private static List<ItemStack> loadItems() {
@@ -131,7 +148,7 @@ public class VulcanItemConfig {
             percents.add(section.getInt(key));
         }
 
-        System.out.println("percents read as: " + percents);
+        //System.out.println("percents read as: " + percents);
 
         return percents;
     }
@@ -145,7 +162,7 @@ public class VulcanItemConfig {
             section2.set(String.valueOf(i), percents.get(i));
         }
 
-        System.out.println("percents saves as:" + percents);
+        //System.out.println("percents saves as:" + percents);
 
         config.save(filee);
     }

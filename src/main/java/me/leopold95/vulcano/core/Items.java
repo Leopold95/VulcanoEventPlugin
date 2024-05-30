@@ -14,7 +14,12 @@ public class Items {
         ItemMeta meta = item.getItemMeta();
 
         NamespacedKey key = Keys.PLAYER_POINTS_ITEM;
+        NamespacedKey costKey = Keys.POINTS_ITEM_COST;
+        int cost = Config.getInt("payer-points-item-cost");
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, key.getKey());
+        meta.getPersistentDataContainer().set(costKey, PersistentDataType.INTEGER, cost);
+
+        meta.setDisplayName("Поинтов содержится: " + cost);
 
         item.setItemMeta(meta);
         return item;
@@ -26,7 +31,12 @@ public class Items {
         ItemMeta meta = item.getItemMeta();
 
         NamespacedKey key = Keys.PLAYER_MONEY_ITEM;
+        NamespacedKey costKey = Keys.MONEY_ITEM_COST;
+        double cost = Config.getDouble("money-drop-cost");
         meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, key.getKey());
+        meta.getPersistentDataContainer().set(costKey, PersistentDataType.DOUBLE, cost);
+
+        meta.setDisplayName("Денег содержится: " + cost);
 
         item.setItemMeta(meta);
         return item;

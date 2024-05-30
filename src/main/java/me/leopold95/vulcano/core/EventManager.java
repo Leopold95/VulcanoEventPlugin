@@ -25,7 +25,6 @@ public class EventManager {
         this.plugin = plugin;
     }
 
-
     private BossBar eventBossBar = null;
     private Location eventLocation = null;
     private Double eventVisibleRadius = null;
@@ -33,6 +32,11 @@ public class EventManager {
     public void  beginEvent(String[] position, Player admin){
         if(eventBossBar != null){
             admin.sendMessage(Config.getMessage("event-exists"));
+            return;
+        }
+
+        if(VulcanItemConfig.itemsCount() == 0){
+            admin.sendMessage(Config.getMessage("event-bad-item-count"));
             return;
         }
 
@@ -64,13 +68,12 @@ public class EventManager {
     private void beginEventTask(Location animationLocation){
         new RepeatingTask(Vulcano.getPlugin(), 0, 20) {
             int taskTicks = 0;
+            final int duration = Config.getInt("event-animation-duration");
+            final int randomDropCount = Config.getInt("random-items-drop-count");
+            final int itemsDropRadius = Config.getInt("dropping-radius");
 
             @Override
             public void run() {
-                int duration = Config.getInt("event-animation-duration");
-                int randomDropCount = Config.getInt("random-items-drop-count");
-                int itemsDropRadius = Config.getInt("dropping-radius");
-
                 taskTicks++;
 
                 updatePlayersBossBar(animationLocation, eventVisibleRadius);
@@ -98,6 +101,9 @@ public class EventManager {
                 if(!eventBossBar.getPlayers().contains(player))
                     eventBossBar.addPlayer(player);
             }
+            else {
+                eventBossBar.removePlayer(player);
+            }
         }
     }
 
@@ -110,7 +116,9 @@ public class EventManager {
                 player.playSound(location, Sound.valueOf(soundStr), soundVolume, 1);
             }
         }
-        catch (Exception ignored) {}
+        catch (Exception exp){
+            Bukkit.getConsoleSender().sendMessage(Config.getMessage("global-sound-bad").replace("%sound%", exp.getMessage()));
+        }
     }
 
     private void playAnimation(Location location){
@@ -152,7 +160,7 @@ public class EventManager {
 //    }
 
     private void dropFinalItem(Location location, int dropRadius,  int randomCount){
-        for(int i = 0; i < randomCount; i ++){
+        for(int i = 1; i <= randomCount; i++){
             ItemStack item = VulcanItemConfig.randomItem();
             Location dropRandomLocation = getRandomLocation(location, dropRadius);
             location.getWorld().dropItemNaturally(dropRandomLocation, item);
@@ -161,6 +169,7 @@ public class EventManager {
 
     private Location getRandomLocation(Location originalLocation, int radius) {
         Random random = new Random();
+
         // Generate random angle and distance
         double angle = random.nextDouble() * 2 * Math.PI; // Random angle between 0 and 2*PI
         double distance = random.nextDouble() * radius; // Random distance within the radius

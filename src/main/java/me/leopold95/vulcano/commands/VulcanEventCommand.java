@@ -3,6 +3,7 @@ package me.leopold95.vulcano.commands;
 import me.leopold95.vulcano.Vulcano;
 import me.leopold95.vulcano.core.Config;
 import me.leopold95.vulcano.core.EventManager;
+import me.leopold95.vulcano.core.Items;
 import me.leopold95.vulcano.core.VulcanItemConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -73,7 +74,7 @@ public class VulcanEventCommand implements CommandExecutor {
             return true;
         }
 
-        if(args[0].equals("addeventdropitem")){
+        if(args[0].equals("itemadd")){
             ItemStack item = player.getInventory().getItemInMainHand();
 
             try {
@@ -88,7 +89,7 @@ public class VulcanEventCommand implements CommandExecutor {
             return true;
         }
 
-        if(args[0].equals("removeeventdropitem")){
+        if(args[0].equals("itemremove")){
             ItemStack item = player.getInventory().getItemInMainHand();
 
             try {
@@ -100,6 +101,16 @@ public class VulcanEventCommand implements CommandExecutor {
                 Bukkit.getConsoleSender().sendMessage(e.getMessage());
             }
 
+            return true;
+        }
+
+        if(args[0].equals("giveplayerpoints")){
+            player.getInventory().addItem(Items.createPlayerPointsItem());
+            return true;
+        }
+
+        if(args[0].equals("givemoney")){
+            player.getInventory().addItem(Items.createMoneyItem());
             return true;
         }
 
