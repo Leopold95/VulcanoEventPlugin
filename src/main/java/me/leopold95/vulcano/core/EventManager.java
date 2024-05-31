@@ -52,9 +52,10 @@ public class EventManager {
         eventLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
 
         for(Player player : Bukkit.getOnlinePlayers()){
-            String messageBegin = Config.getMessage("event-global-begging");
-            messageBegin += " x z" + eventLocation.getX() + " " + eventLocation.getZ();
-
+            String messageBegin = Config.getMessage("event-global-begging").
+                    replace("%x%", String.valueOf(eventLocation.getX())).
+                    replace("%y%", String.valueOf(eventLocation.getY())).
+                    replace("%z%", String.valueOf(eventLocation.getZ()));
             player.sendMessage(messageBegin);
         }
 
