@@ -6,7 +6,7 @@
 
   <groupId>me.leopold95</groupId>
   <artifactId>Vulcano</artifactId>
-  <version>1.1-RELEASE</version>
+  <version>1.2-RELEASE</version>
   <packaging>jar</packaging>
 
   <name>Vulcano</name>

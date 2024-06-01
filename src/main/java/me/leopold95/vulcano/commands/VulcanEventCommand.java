@@ -21,15 +21,23 @@ public class VulcanEventCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if(!(sender instanceof Player)) {
-            sender.sendMessage("");
+        if(!(sender instanceof Player) && !args[0].equals("start")) {
+            sender.sendMessage(Config.getMessage("console-bad"));
             return false;
         }
 
-        Player player = (Player) sender;
+        if(args.length == 0){
+            return false;
+        }
 
         //setposition argument
         if(args[0].equals("setposition")){
+            Player player = (Player) sender;
+            if(!player.hasPermission("vulcanevent.setposition")){
+                player.sendMessage(Config.getMessage("permission-bad"));
+                return true;
+            }
+
             //hash values
             int x = player.getLocation().getBlockX();
             int y = player.getLocation().getBlockY();
@@ -51,6 +59,11 @@ public class VulcanEventCommand implements CommandExecutor {
 
         //start argument
         if(args[0].equals("start")){
+            if(!sender.hasPermission("vulcanevent.start")){
+                sender.sendMessage(Config.getMessage("permission-bad"));
+                return true;
+            }
+
             String strEventLocation;
 
             try {
@@ -70,11 +83,18 @@ public class VulcanEventCommand implements CommandExecutor {
             String[] location = Config.getString("next-event-location").split(" ");
 
             //begin event
-            plugin.getVulcanEvent().beginEvent(location, player);
+            plugin.getVulcanEvent().beginEvent(location, sender);
             return true;
         }
 
         if(args[0].equals("itemadd")){
+            Player player = (Player) sender;
+
+            if(!player.hasPermission("vulcanevent.itemadd")){
+                player.sendMessage(Config.getMessage("permission-bad"));
+                return true;
+            }
+
             ItemStack item = player.getInventory().getItemInMainHand();
 
             try {
@@ -90,6 +110,13 @@ public class VulcanEventCommand implements CommandExecutor {
         }
 
         if(args[0].equals("itemremove")){
+            Player player = (Player) sender;
+
+            if(!player.hasPermission("vulcanevent.itemremove")){
+                player.sendMessage(Config.getMessage("permission-bad"));
+                return true;
+            }
+
             ItemStack item = player.getInventory().getItemInMainHand();
 
             try {
@@ -105,11 +132,23 @@ public class VulcanEventCommand implements CommandExecutor {
         }
 
         if(args[0].equals("giveplayerpoints")){
+            Player player = (Player) sender;
+            if(!player.hasPermission("vulcanevent.giveplayerpoints")){
+                player.sendMessage(Config.getMessage("permission-bad"));
+                return true;
+            }
+
             player.getInventory().addItem(Items.createPlayerPointsItem());
             return true;
         }
 
         if(args[0].equals("givemoney")){
+            Player player = (Player) sender;
+            if(!player.hasPermission("vulcanevent.givemoney")){
+                player.sendMessage(Config.getMessage("permission-bad"));
+                return true;
+            }
+
             player.getInventory().addItem(Items.createMoneyItem());
             return true;
         }

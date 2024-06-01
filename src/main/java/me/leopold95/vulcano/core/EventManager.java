@@ -8,6 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class EventManager {
     private Location eventLocation = null;
     private Double eventVisibleRadius = null;
 
-    public void  beginEvent(String[] position, Player admin){
+    public void  beginEvent(String[] position, CommandSender admin){
         if(eventBossBar != null){
             admin.sendMessage(Config.getMessage("event-exists"));
             return;
