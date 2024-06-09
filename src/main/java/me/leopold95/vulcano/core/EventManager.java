@@ -99,6 +99,9 @@ public class EventManager {
 
     private void updatePlayersBossBar(Location center, double radius){
         for (Player player: Bukkit.getOnlinePlayers()){
+            if(!player.getWorld().equals(center.getWorld()))
+                continue;
+
             if(player.getLocation().distance(center) <= radius){
                 if(!eventBossBar.getPlayers().contains(player))
                     eventBossBar.addPlayer(player);
@@ -136,30 +139,6 @@ public class EventManager {
             }
         }
     }
-
-//    private static void dropMoney(Location location, int radius){
-//        int randomPos1 = new Random().nextInt((radius) + 1);
-//        int randomPos2 = new Random().nextInt((radius) + 1);
-//
-//        Location loc = location.clone();
-//        loc.setX(loc.getX() + randomPos1);
-//        loc.setZ(loc.getZ() + randomPos2);
-//        loc.setY(loc.getY() + 3);
-//
-//        location.getWorld().dropItemNaturally(loc, Items.createMoneyItem());
-//    }
-//
-//    private static void dropPoints(Location location, int radius){
-//        int randomPos1 = new Random().nextInt((radius) + 1);
-//        int randomPos2 = new Random().nextInt((radius) + 1);
-//
-//        Location loc = location.clone();
-//        loc.setX(loc.getX() + randomPos1);
-//        loc.setZ(loc.getZ() + randomPos2);
-//        loc.setY(loc.getY() + 3);
-//
-//        location.getWorld().dropItemNaturally(location, Items.createPlayerPointsItem());
-//    }
 
     private void dropFinalItem(Location location, int dropRadius,  int randomCount){
         for(int i = 1; i <= randomCount; i++){

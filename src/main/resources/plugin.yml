@@ -13,3 +13,24 @@ commands:
     usage: "/vulcanevent <действие>"
     permission: vulcanplugin.vulcancommand
     permission-message: У вас недостачно прав для исплользования этой команды
+
+permissions:
+  vulcanevent:
+    setposition:
+      description: Разрешает использование /vulcanevent setposition
+      default: op
+    start:
+      description: Разрешает использование /vulcanevent start
+      default: op
+    itemadd:
+      description: Разрешает использование /vulcanevent itemadd
+      default: op
+    itemremove:
+      description: Разрешает использование /vulcanevent itemremove
+      default: op
+    giveplayerpoints:
+      description: Разрешает использование /vulcanevent giveplayerpoints
+      default: op
+    givemoney:
+      description: Разрешает использование /vulcanevent givemoney
+      default: op

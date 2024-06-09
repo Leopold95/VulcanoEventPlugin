@@ -179,48 +179,6 @@ public class VulcanItemConfig {
 
         return false;
     }
-
-//    public static void addVulcanItem(ItemStack item) throws IOException{
-//        ArrayList<ItemStack> list;
-//        if(!existsVulcanoList(VULCAN_ITEMS_LIST_NAME)){
-//            list = new ArrayList<ItemStack>();
-//        }
-//        else {
-//            list = vulcanItemsList();
-//        }
-//        list.add(item);
-//        setItemsList(VULCAN_ITEMS_LIST_NAME, list);
-//    }
-//
-//    public static void removeVulcanItem(ItemStack item){
-//
-//    }
-//
-//    public static ArrayList<ItemStack> vulcanItemsList(){
-//        ArrayList<ItemStack> items = new ArrayList<>();
-//
-//        List<String> serializedStringItemsList = itemsConfig.getStringList(VULCAN_ITEMS_LIST_NAME);
-//
-//        for(String info: serializedStringItemsList){
-//            items.add(ItemStack.deserialize(info));
-//        }
-//
-//        return items;
-//    }
-//
-//    public static void setItemsList(String path, Object object) throws IOException {
-//        itemsConfig.set(path, object);
-//        itemsConfig.save(itemsFile);
-//    }
-
-
-//    public static boolean existsVulcanoList(String path){
-//        return itemsConfig.contains(path);
-//    }
-//    public static boolean existsVulcanoItem(String path){
-//        return itemsConfig.contains(path);
-//    }
-
     public static void register(JavaPlugin plugin) {
         createItemsConfig("vulcanoitems.yml", plugin);
     }
